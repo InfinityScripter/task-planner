@@ -4,6 +4,7 @@ import moment from "moment";
 import {LocalStorageService} from "../local-storage.service";
 import {EditTaskDialogComponent} from "../edit-task-dialog/edit-task-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {FormControl} from "@angular/forms";
 
 interface Task {
   id: number;
@@ -24,11 +25,12 @@ export class DayComponent implements OnInit {
   tasks: Task[] = [];
   nextTaskId = 0;
   editingId: number | null = null;
+  dueDateControl = new FormControl();
 
   constructor(
     private route: ActivatedRoute,
     private localStorageService: LocalStorageService,
-    public dialog: MatDialog  // Inject MatDialog here
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
