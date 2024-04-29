@@ -12,7 +12,7 @@
       </mat-card-content>
       <button mat-button color="primary" (click)="toggleTaskStatus(task.id)">{{task.completed ? 'Вернуть в работу' : 'Завершить'}}</button>
       <button mat-button color="warn" (click)="removeTask(task.id)">Удалить</button>
-      <button mat-button color="accent" (click)="editTask(task.id)">Редактировать</button>
+      <button mat-button color="accent" (click)="openEditDialog(task)">Редактировать</button>
     </div>
     <div *ngIf="editingId === task.id">
       <mat-form-field class="example-full-width">

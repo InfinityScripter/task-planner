@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Редактирование задачи</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.title" placeholder="Заголовок">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [formControl]="dueDateControl" placeholder="Срок исполнения" type="date">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.content" placeholder="Задача">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="save()">Сохранить</button>
+</div>

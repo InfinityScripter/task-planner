@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import moment from "moment";
 import {LocalStorageService} from "../local-storage.service";
+import {EditTaskDialogComponent} from "../edit-task-dialog/edit-task-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 interface Task {
   id: number;
@@ -23,7 +25,11 @@ export class DayComponent implements OnInit {
   nextTaskId = 0;
   editingId: number | null = null;
 
-  constructor(private route: ActivatedRoute, private localStorageService: LocalStorageService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private localStorageService: LocalStorageService,
+    public dialog: MatDialog  // Inject MatDialog here
+  ) {}
 
   ngOnInit() {
     this.date = this.route.snapshot.paramMap.get('date');
@@ -64,5 +70,18 @@ export class DayComponent implements OnInit {
     this.tasks = this.tasks.map(task => task.id === id ? {...task, title, dueDate: moment(dueDate, 'YYYY-MM-DD').format('DD.MM.YYYY'), content} : task);
     this.localStorageService.setItem(this.date || 'default', this.tasks);
     this.editingId = null;
+  }
+
+  openEditDialog(task: Task): void {
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {
+      width: '250px',
+      data: { title: task.title, content: task.content }
+    });
+
+    dialogRef.afterClosed().subscribe((result: { title: string; dueDate: string; content: string; }) => {
+      if (result) {
+        this.saveTask(task.id, result.title, result.dueDate, result.content);
+      }
+    });
   }
 }

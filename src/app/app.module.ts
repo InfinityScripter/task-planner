@@ -11,12 +11,15 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import { DayComponent } from './day/day.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { EditTaskDialogComponent } from './edit-task-dialog/edit-task-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
     AppComponent,
     DayComponent,
+    EditTaskDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,6 +33,8 @@ import {FormsModule} from "@angular/forms";
     MatMomentDateModule,
     CalendarComponent,
     FormsModule,
+    MatDialogModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
