@@ -5,6 +5,7 @@ import {LocalStorageService} from "../local-storage.service";
 import {EditTaskDialogComponent} from "../edit-task-dialog/edit-task-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AddSubtaskDialogComponent} from "../add-subtask-dialog.component/add-subtask-dialog.component.component";
 
 interface Task {
   id: number;
@@ -12,6 +13,7 @@ interface Task {
   dueDate: moment.Moment;
   content: string;
   completed: boolean;
+  subtasks?: Task[];
 }
 
 @Component({
@@ -93,4 +95,53 @@ export class DayComponent implements OnInit {
       }
     });
   }
+  addSubtask(taskId: number) {
+    const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const subtask: Task = {
+          id: this.nextTaskId++,
+          title: result.title,
+          dueDate: moment(result.dueDate, 'YYYY-MM-DD'),
+          content: result.content,
+          completed: false
+        };
+        this.tasks = this.tasks.map(task => {
+          if (task.id === taskId) {
+            task.subtasks = [...(task.subtasks || []), subtask];
+          }
+          return task;
+        });
+        this.localStorageService.setItem(this.date || 'default', this.tasks);
+      }
+    });
+  }
+  removeSubtask(taskId: number, subtaskId: number) {
+    this.tasks = this.tasks.map(task => {
+      if (task.id === taskId) {
+        task.subtasks = (task.subtasks || []).filter(st => st.id !== subtaskId);
+      }
+      return task;
+    });
+    this.localStorageService.setItem(this.date || 'default', this.tasks);
+  }
+
+  toggleSubtaskStatus(taskId: number, subtaskId: number) {
+    this.tasks = this.tasks.map(task => {
+      if (task.id === taskId && task.subtasks) {
+        task.subtasks = task.subtasks.map(subtask => {
+          if (subtask.id === subtaskId) {
+            subtask.completed = !subtask.completed;
+          }
+          return subtask;
+        });
+      }
+      return task;
+    });
+    this.localStorageService.setItem(this.date || 'default', this.tasks);
+  }
+
 }

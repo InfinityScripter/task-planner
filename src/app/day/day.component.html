@@ -22,6 +22,8 @@
               {{task.completed ? 'Вернуть в работу' : 'Завершить'}}
             </button>
           </div>
+          <button mat-raised-button color="primary" (click)="addSubtask(task.id)">Добавить подзадачу</button>
+
           <div>
             <button mat-button color="warn" (click)="removeTask(task.id)">Удалить</button>
           </div>
@@ -43,6 +45,32 @@
       </mat-form-field>
       <button mat-raised-button color="primary" (click)="saveTask(task.id, task.title, task.dueDate.format('YYYY-MM-DD'), task.content)">Сохранить</button>
     </div>
+
+    <div *ngIf="task.subtasks && task.subtasks.length > 0">
+      <div *ngFor="let subtask of task.subtasks">
+        <mat-card-header>
+          <mat-card-title>{{subtask.title}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="task-content">
+          <p>{{subtask.content}}</p>
+        </mat-card-content>
+        <mat-card-subtitle class="flex-center">
+          <mat-icon>schedule</mat-icon>  {{subtask.dueDate}}
+        </mat-card-subtitle>
+        <mat-card-actions class="flex-space-between">
+          <div>
+            <button mat-button color="primary" (click)="toggleSubtaskStatus(task.id, subtask.id)">
+              <mat-icon>{{subtask.completed ? 'undo' : 'done'}}</mat-icon>
+              {{subtask.completed ? 'Вернуть в работу' : 'Завершить'}}
+            </button>
+          </div>
+          <div>
+            <button mat-button color="warn" (click)="removeSubtask(task.id, subtask.id)">Удалить</button>
+          </div>
+        </mat-card-actions>
+      </div>
+    </div>
+
   </mat-card-content>
 </div>
 
