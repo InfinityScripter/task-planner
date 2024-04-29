@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
+import moment from "moment";
 
 @Component({
   selector: 'app-edit-task-dialog',
@@ -17,7 +18,7 @@ export class EditTaskDialogComponent {
   save(): void {
     this.dialogRef.close({
       title: this.data.title,
-      dueDate: this.dueDateControl.value,
+      dueDate: moment(this.dueDateControl.value).format('YYYY-MM-DD'),
       content: this.data.content,
     });
   }

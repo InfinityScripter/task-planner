@@ -74,7 +74,7 @@ export class DayComponent implements OnInit {
 
   openEditDialog(task: Task): void {
     const dialogRef = this.dialog.open(EditTaskDialogComponent, {
-      width: '250px',
+      width: '300px',
       data: { title: task.title, content: task.content }
     });
 
