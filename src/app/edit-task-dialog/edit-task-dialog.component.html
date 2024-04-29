@@ -8,7 +8,7 @@
     <input matInput [matDatepicker]="picker" [formControl]="dueDateControl" placeholder="Измените дату">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="dueDateControl.invalid && dueDateControl.touched">Это поле обязательно</mat-error>
+    <mat-error *ngIf="dueDateControl.invalid && dueDateControl.touched">Введите правильную дату</mat-error>
   </mat-form-field>
   <mat-form-field>
     <input matInput [formControl]="contentControl" placeholder="Задача">

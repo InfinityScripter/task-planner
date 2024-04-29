@@ -1,18 +1,35 @@
 <mat-card>
-  <mat-card-title>{{formattedDate}}</mat-card-title>
+  <mat-card-subtitle class="flex-center">{{formattedDate}}</mat-card-subtitle>
 </mat-card>
 
-<mat-card *ngFor="let task of tasks; index as i">
+<div *ngFor="let task of tasks; index as i">
   <mat-card-content>
     <div *ngIf="editingId !== task.id">
-      <h2>{{task.title}}</h2>
-      <p>Срок исполнения: {{task.dueDate }}</p>
-      <mat-card-content>
-        {{task.content}}
-      </mat-card-content>
-      <button mat-button color="primary" (click)="toggleTaskStatus(task.id)">{{task.completed ? 'Вернуть в работу' : 'Завершить'}}</button>
-      <button mat-button color="warn" (click)="removeTask(task.id)">Удалить</button>
-      <button mat-button color="accent" (click)="openEditDialog(task)">Редактировать</button>
+      <mat-card [ngClass]="{'completed': task.completed}">
+        <mat-card-header>
+          <mat-card-title>{{task.title}}</mat-card-title>
+          <mat-card-subtitle class="flex-center">
+            <mat-icon>schedule</mat-icon> Срок исполнения: {{task.dueDate}}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="task-content">
+          <p>{{task.content}}</p>
+        </mat-card-content>
+        <mat-card-actions class="flex-space-between">
+          <div>
+            <button mat-button color="primary" (click)="toggleTaskStatus(task.id)">
+              <mat-icon>{{task.completed ? 'undo' : 'done'}}</mat-icon>
+              {{task.completed ? 'Вернуть в работу' : 'Завершить'}}
+            </button>
+          </div>
+          <div>
+            <button mat-button color="warn" (click)="removeTask(task.id)">Удалить</button>
+          </div>
+        </mat-card-actions>
+        <button mat-icon-button color="accent" (click)="openEditDialog(task)" class="edit-button">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-card>
     </div>
     <div *ngIf="editingId === task.id">
       <mat-form-field class="example-full-width">
@@ -27,7 +44,7 @@
       <button mat-raised-button color="primary" (click)="saveTask(task.id, task.title, task.dueDate.format('YYYY-MM-DD'), task.content)">Сохранить</button>
     </div>
   </mat-card-content>
-</mat-card>
+</div>
 
 <form [formGroup]="taskForm" (ngSubmit)="addTask()">
   <mat-form-field class="example-full-width">
@@ -38,7 +55,7 @@
     <input matInput [matDatepicker]="picker" formControlName="dueDate" placeholder="Срок исполнения">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="taskForm.controls['dueDate'].invalid && taskForm.controls['dueDate'].touched">Это поле обязательно</mat-error>
+    <mat-error *ngIf="taskForm.controls['dueDate'].invalid && taskForm.controls['dueDate'].touched">Введите правильную дату</mat-error>
 
   </mat-form-field>
   <mat-form-field class="example-full-width">
