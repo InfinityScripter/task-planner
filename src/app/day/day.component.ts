@@ -5,7 +5,10 @@ import {LocalStorageService} from "../local-storage.service";
 
 interface Task {
   id: number;
+  title: string;
+  dueDate: string;
   content: string;
+  completed: boolean;
 }
 
 @Component({
@@ -33,11 +36,22 @@ export class DayComponent implements OnInit {
     this.localStorageService.setItem(this.date || 'default', this.tasks);
   }
 
-  addTask(content: string) {
-    this.updateTasks([...this.tasks, {id: this.nextTaskId++, content}]);
+  addTask(title: string, dueDate: string, content: string) {
+    const task: Task = {
+      id: this.nextTaskId++,
+      title,
+      dueDate: moment(dueDate, 'YYYY-MM-DD').format('DD.MM.YYYY'),
+      content,
+      completed: false
+    };
+    this.updateTasks([...this.tasks, task]);
   }
 
   removeTask(id: number) {
     this.updateTasks(this.tasks.filter(task => task.id !== id));
+  }
+  toggleTaskStatus(id: number) {
+    this.tasks = this.tasks.map(task => task.id === id ? {...task, completed: !task.completed} : task);
+    this.localStorageService.setItem(this.date || 'default', this.tasks);
   }
 }

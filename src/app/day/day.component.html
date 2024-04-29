@@ -4,12 +4,23 @@
 
 <mat-card *ngFor="let task of tasks; index as i">
   <mat-card-content>
+    <h2>{{task.title}}</h2>
+    <p>Срок исполнения: {{task.dueDate | date}}</p>
+    <mat-card-content>
     {{task.content}}
+    </mat-card-content>
+    <button mat-button color="primary" (click)="toggleTaskStatus(task.id)">{{task.completed ? 'Вернуть в работу' : 'Завершить'}}</button>
     <button mat-button color="warn" (click)="removeTask(task.id)">Удалить</button>
   </mat-card-content>
 </mat-card>
 
 <mat-form-field class="example-full-width">
+  <input matInput placeholder="Заголовок" #titleInput>
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Срок исполнения" #dueDateInput type="date">
+</mat-form-field>
+<mat-form-field class="example-full-width">
   <input matInput placeholder="Новая задача" #taskInput>
 </mat-form-field>
-<button mat-raised-button color="primary" (click)="addTask(taskInput.value); taskInput.value=''">Добавить задачу</button>
+<button mat-raised-button color="primary" (click)="addTask(titleInput.value, dueDateInput.value, taskInput.value); titleInput.value=''; dueDateInput.value=''; taskInput.value=''">Добавить задачу</button>
