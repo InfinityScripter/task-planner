@@ -1,2 +1,2 @@
-<mat-calendar class="inline-calendar-card" [selected]="selected" (selectedChange)="setSelected($event)" (dblclick)="onDateDblClick()"></mat-calendar>
+<mat-calendar [dateClass]="dateClass" class="inline-calendar-card" [selected]="selected" (selectedChange)="setSelected($event)" (dblclick)="onDateDblClick()"></mat-calendar>
 <p class="inline-calendar-p">Selected date: {{formattedSelected}}</p>

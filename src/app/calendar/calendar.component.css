@@ -6,3 +6,7 @@
   text-align: center;
   margin: 0 auto;
 }
+
+::ng-deep .special-date .mat-calendar-body-cell-content {
+  background-color: #ff0;
+}

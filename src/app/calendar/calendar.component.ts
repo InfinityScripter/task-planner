@@ -4,6 +4,9 @@ import {MatCardModule} from '@angular/material/card';
 import {NativeDateAdapter} from '@angular/material/core';
 import {Router} from '@angular/router';
 import moment from "moment";
+import {LocalStorageService} from "../local-storage.service";
+
+
 
 @Component({
   selector: 'app-calendar',
@@ -15,9 +18,22 @@ import moment from "moment";
 
 })
 export class CalendarComponent {
+
   selected: Date | null = null;
   formattedSelected: string | null = null;
-  constructor(private router: Router) {}
+  datesWithTasks: string[] = [];
+  constructor(private router: Router,private localStorageService: LocalStorageService) {}
+
+  ngOnInit() {
+    this.datesWithTasks = this.localStorageService.getAllKeys();
+  }
+
+  isDateHighlighted(date: Date): boolean {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    const isHighlighted = this.datesWithTasks.includes(formattedDate);
+    console.log(`Date: ${formattedDate}, isHighlighted: ${isHighlighted}`);
+    return isHighlighted;
+  }
 
   onDateDblClick() {
     const formattedDate = moment(this.selected).format('YYYY-MM-DD');
@@ -28,4 +44,8 @@ export class CalendarComponent {
     this.selected = date;
     this.formattedSelected = date ? moment(date).format('YYYY-MM-DD') : null;
   }
+
+  dateClass = (d: Date) => {
+    return this.isDateHighlighted(d) ? 'special-date' : '';
+  };
 }

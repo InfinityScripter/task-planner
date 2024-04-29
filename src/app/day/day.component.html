@@ -1,10 +1,15 @@
-<p>day works!</p>
+<mat-card>
+  <mat-card-title>{{formattedDate}}</mat-card-title>
+</mat-card>
 
-<p>{{formattedDate}}</p>
+<mat-card *ngFor="let task of tasks; index as i">
+  <mat-card-content>
+    {{task.content}}
+    <button mat-button color="warn" (click)="removeTask(task.id)">Удалить</button>
+  </mat-card-content>
+</mat-card>
 
-<div *ngFor="let task of tasks; index as i">
-  <p>{{task.content}} <button (click)="removeTask(task.id)">Удалить</button></p>
-</div>
-
-<input #taskInput type="text">
-<button (click)="addTask(taskInput.value); taskInput.value=''">Добавить задачу</button>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Новая задача" #taskInput>
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="addTask(taskInput.value); taskInput.value=''">Добавить задачу</button>
