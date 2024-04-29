@@ -14,6 +14,9 @@ import { DayComponent } from './day/day.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { EditTaskDialogComponent } from './edit-task-dialog/edit-task-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import {MatDialogModule} from "@angular/material/dialog";
     FormsModule,
     MatDialogModule,
     ReactiveFormsModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
