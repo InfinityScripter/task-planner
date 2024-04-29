@@ -6,7 +6,7 @@
   <mat-card-content>
     <div *ngIf="editingId !== task.id">
       <h2>{{task.title}}</h2>
-      <p>Срок исполнения: {{task.dueDate | date}}</p>
+      <p>Срок исполнения: {{task.dueDate }}</p>
       <mat-card-content>
         {{task.content}}
       </mat-card-content>
@@ -24,7 +24,7 @@
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Задача" [(ngModel)]="task.content">
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="saveTask(task.id, task.title, task.dueDate, task.content)">Сохранить</button>
+      <button mat-raised-button color="primary" (click)="saveTask(task.id, task.title, task.dueDate.format('YYYY-MM-DD'), task.content)">Сохранить</button>
     </div>
   </mat-card-content>
 </mat-card>

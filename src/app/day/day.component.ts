@@ -8,7 +8,7 @@ import {MatDialog} from "@angular/material/dialog";
 interface Task {
   id: number;
   title: string;
-  dueDate: string;
+  dueDate: moment.Moment;
   content: string;
   completed: boolean;
 }
@@ -20,7 +20,7 @@ interface Task {
 })
 export class DayComponent implements OnInit {
   date: string | null = null;
-  formattedDate: string | null = null;
+  formattedDate: moment.Moment | null = null;
   tasks: Task[] = [];
   nextTaskId = 0;
   editingId: number | null = null;
@@ -33,7 +33,7 @@ export class DayComponent implements OnInit {
 
   ngOnInit() {
     this.date = this.route.snapshot.paramMap.get('date');
-    this.formattedDate = this.date ? moment(this.date, 'YYYY-MM-DD').format('DD.MM.YYYY') : null;
+    this.formattedDate = this.date ? moment(this.date, 'YYYY-MM-DD') : null;
     this.tasks = this.localStorageService.getItem(this.date || 'default') || [];
     this.nextTaskId = this.tasks.length > 0 ? Math.max(...this.tasks.map(task => task.id)) + 1 : 0;
   }
@@ -47,7 +47,7 @@ export class DayComponent implements OnInit {
     const task: Task = {
       id: this.nextTaskId++,
       title,
-      dueDate: moment(dueDate, 'YYYY-MM-DD').format('DD.MM.YYYY'),
+      dueDate: moment(dueDate, 'YYYY-MM-DD'),
       content,
       completed: false
     };
@@ -67,7 +67,7 @@ export class DayComponent implements OnInit {
   }
 
   saveTask(id: number, title: string, dueDate: string, content: string) {
-    this.tasks = this.tasks.map(task => task.id === id ? {...task, title, dueDate: moment(dueDate, 'YYYY-MM-DD').format('DD.MM.YYYY'), content} : task);
+    this.tasks = this.tasks.map(task => task.id === id ? {...task, title, dueDate: moment(dueDate, 'YYYY-MM-DD'), content} : task);
     this.localStorageService.setItem(this.date || 'default', this.tasks);
     this.editingId = null;
   }
