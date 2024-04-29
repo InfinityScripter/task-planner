@@ -1,3 +1,10 @@
 <p>day works!</p>
 
-<p>{{date}}</p>
+<p>{{formattedDate}}</p>
+
+<div *ngFor="let task of tasks; index as i">
+  <p>{{task.content}} <button (click)="removeTask(task.id)">Удалить</button></p>
+</div>
+
+<input #taskInput type="text">
+<button (click)="addTask(taskInput.value); taskInput.value=''">Добавить задачу</button>
