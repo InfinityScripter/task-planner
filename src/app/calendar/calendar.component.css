@@ -10,3 +10,16 @@
 ::ng-deep .special-date .mat-calendar-body-cell-content {
   background-color: #ff0;
 }
+
+
+::ng-deep .overdue .mat-calendar-body-cell-content {
+  background-color: #f00;
+}
+
+::ng-deep .completed .mat-calendar-body-cell-content {
+  background-color: #0f0;
+}
+
+::ng-deep .pending .mat-calendar-body-cell-content {
+  background-color: #ff0;
+}

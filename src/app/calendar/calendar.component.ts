@@ -27,13 +27,10 @@ export class CalendarComponent {
   ngOnInit() {
     this.datesWithTasks = this.localStorageService.getAllKeys();
   }
-
-  isDateHighlighted(date: Date): boolean {
-    const formattedDate = moment(date).format('YYYY-MM-DD');
-    const isHighlighted = this.datesWithTasks.includes(formattedDate);
-    console.log(`Date: ${formattedDate}, isHighlighted: ${isHighlighted}`);
-    return isHighlighted;
-  }
+isDateHighlighted(date: Date): boolean {
+  const dateString = moment(date).format('YYYY-MM-DD');
+  return this.datesWithTasks.includes(dateString);
+}
 
   onDateDblClick() {
     const formattedDate = moment(this.selected).format('YYYY-MM-DD');
