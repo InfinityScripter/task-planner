@@ -1,16 +1,22 @@
 <h1 mat-dialog-title>Редактирование задачи</h1>
 <div mat-dialog-content>
   <mat-form-field>
-    <input matInput [(ngModel)]="data.title" placeholder="Заголовок">
+    <input matInput [formControl]="titleControl" placeholder="Заголовок">
+    <mat-error *ngIf="titleControl.invalid && titleControl.touched">Это поле обязательно</mat-error>
   </mat-form-field>
   <mat-form-field>
     <input matInput [matDatepicker]="picker" [formControl]="dueDateControl" placeholder="Измените дату">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="dueDateControl.invalid && dueDateControl.touched">Это поле обязательно</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input matInput [(ngModel)]="data.content" placeholder="Задача">
+    <input matInput [formControl]="contentControl" placeholder="Задача">
+    <mat-error *ngIf="contentControl.invalid && contentControl.touched">Это поле обязательно</mat-error>
   </mat-form-field>
+
+  <mat-error class="mat-mdc-form-field-subscript-wrapper" *ngIf="formInvalid" >Пожалуйста, заполните все поля.
+</mat-error>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="save()">Сохранить</button>

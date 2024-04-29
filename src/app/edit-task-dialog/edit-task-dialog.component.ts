@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 import moment from "moment";
 
 @Component({
@@ -8,18 +8,29 @@ import moment from "moment";
   templateUrl: './edit-task-dialog.component.html',
 })
 export class EditTaskDialogComponent {
-  dueDateControl = new FormControl();
+  titleControl = new FormControl('', Validators.required);
+  dueDateControl = new FormControl('', Validators.required);
+  contentControl = new FormControl('', Validators.required);
+  formInvalid = false;
 
   constructor(
     public dialogRef: MatDialogRef<EditTaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { title: string; content: string }
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { title: string; dueDate: string; content: string }
+  ) {
+    this.titleControl.setValue(data.title);
+    this.dueDateControl.setValue(data.dueDate);
+    this.contentControl.setValue(data.content);
+  }
 
   save(): void {
-    this.dialogRef.close({
-      title: this.data.title,
-      dueDate: moment(this.dueDateControl.value).format('YYYY-MM-DD'),
-      content: this.data.content,
-    });
+    if (this.titleControl.valid && this.dueDateControl.valid && this.contentControl.valid) {
+      this.dialogRef.close({
+        title: this.titleControl.value,
+        dueDate: moment(this.dueDateControl.value).format('YYYY-MM-DD'),
+        content: this.contentControl.value,
+      });
+    } else {
+      this.formInvalid = true;
+    }
   }
 }
