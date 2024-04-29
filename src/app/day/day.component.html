@@ -29,15 +29,21 @@
   </mat-card-content>
 </mat-card>
 
-<mat-form-field class="example-full-width">
-  <input matInput placeholder="Заголовок" #titleInput>
-</mat-form-field>
-<mat-form-field>
-  <input matInput [matDatepicker]="picker" [formControl]="dueDateControl" placeholder="Срок исполнения">
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
-</mat-form-field>
-<mat-form-field class="example-full-width">
-  <input matInput placeholder="Новая задача" #taskInput>
-</mat-form-field>
-<button mat-raised-button color="primary" (click)="addTask(titleInput.value, dueDateControl.value, taskInput.value); titleInput.value=''; taskInput.value=''">Добавить задачу</button>
+<form [formGroup]="taskForm" (ngSubmit)="addTask()">
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Заголовок" formControlName="title">
+    <mat-error *ngIf="taskForm.controls['title'].invalid && taskForm.controls['title'].touched">Это поле обязательно</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" formControlName="dueDate" placeholder="Срок исполнения">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="taskForm.controls['dueDate'].invalid && taskForm.controls['dueDate'].touched">Это поле обязательно</mat-error>
+
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Описание задачи" formControlName="content">
+    <mat-error *ngIf="taskForm.controls['content'].invalid && taskForm.controls['content'].touched">Это поле обязательно</mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Добавить задачу</button>
+</form>

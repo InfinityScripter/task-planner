@@ -4,7 +4,7 @@ import moment from "moment";
 import {LocalStorageService} from "../local-storage.service";
 import {EditTaskDialogComponent} from "../edit-task-dialog/edit-task-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {FormControl} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 interface Task {
   id: number;
@@ -26,6 +26,7 @@ export class DayComponent implements OnInit {
   nextTaskId = 0;
   editingId: number | null = null;
   dueDateControl = new FormControl();
+  taskForm: FormGroup = new FormGroup({});
 
   constructor(
     private route: ActivatedRoute,
@@ -38,6 +39,11 @@ export class DayComponent implements OnInit {
     this.formattedDate = this.date ? moment(this.date, 'YYYY-MM-DD') : null;
     this.tasks = this.localStorageService.getItem(this.date || 'default') || [];
     this.nextTaskId = this.tasks.length > 0 ? Math.max(...this.tasks.map(task => task.id)) + 1 : 0;
+    this.taskForm = new FormGroup({
+      'title': new FormControl(null, Validators.required),
+      'dueDate': new FormControl(null, Validators.required),
+      'content': new FormControl(null, Validators.required)
+    });
   }
 
   updateTasks(newTasks: Task[]) {
@@ -45,15 +51,19 @@ export class DayComponent implements OnInit {
     this.localStorageService.setItem(this.date || 'default', this.tasks);
   }
 
-  addTask(title: string, dueDate: string, content: string) {
-    const task: Task = {
-      id: this.nextTaskId++,
-      title,
-      dueDate: moment(dueDate, 'YYYY-MM-DD'),
-      content,
-      completed: false
-    };
-    this.updateTasks([...this.tasks, task]);
+  addTask() {
+    if (this.taskForm.valid) {
+      const { title, dueDate, content } = this.taskForm.value;
+      const task: Task = {
+        id: this.nextTaskId++,
+        title,
+        dueDate: moment(dueDate, 'YYYY-MM-DD'),
+        content,
+        completed: false
+      };
+      this.updateTasks([...this.tasks, task]);
+      this.taskForm.reset();
+    }
   }
 
   removeTask(id: number) {
@@ -64,9 +74,6 @@ export class DayComponent implements OnInit {
     this.localStorageService.setItem(this.date || 'default', this.tasks);
   }
 
-  editTask(id: number) {
-    this.editingId = id;
-  }
 
   saveTask(id: number, title: string, dueDate: string, content: string) {
     this.tasks = this.tasks.map(task => task.id === id ? {...task, title, dueDate: moment(dueDate, 'YYYY-MM-DD'), content} : task);
