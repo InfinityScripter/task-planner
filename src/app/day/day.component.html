@@ -4,13 +4,28 @@
 
 <mat-card *ngFor="let task of tasks; index as i">
   <mat-card-content>
-    <h2>{{task.title}}</h2>
-    <p>Срок исполнения: {{task.dueDate | date}}</p>
-    <mat-card-content>
-    {{task.content}}
-    </mat-card-content>
-    <button mat-button color="primary" (click)="toggleTaskStatus(task.id)">{{task.completed ? 'Вернуть в работу' : 'Завершить'}}</button>
-    <button mat-button color="warn" (click)="removeTask(task.id)">Удалить</button>
+    <div *ngIf="editingId !== task.id">
+      <h2>{{task.title}}</h2>
+      <p>Срок исполнения: {{task.dueDate | date}}</p>
+      <mat-card-content>
+        {{task.content}}
+      </mat-card-content>
+      <button mat-button color="primary" (click)="toggleTaskStatus(task.id)">{{task.completed ? 'Вернуть в работу' : 'Завершить'}}</button>
+      <button mat-button color="warn" (click)="removeTask(task.id)">Удалить</button>
+      <button mat-button color="accent" (click)="editTask(task.id)">Редактировать</button>
+    </div>
+    <div *ngIf="editingId === task.id">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Заголовок" [(ngModel)]="task.title">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Срок исполнения" [(ngModel)]="task.dueDate" type="date">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Задача" [(ngModel)]="task.content">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="saveTask(task.id, task.title, task.dueDate, task.content)">Сохранить</button>
+    </div>
   </mat-card-content>
 </mat-card>
 

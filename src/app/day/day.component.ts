@@ -21,6 +21,7 @@ export class DayComponent implements OnInit {
   formattedDate: string | null = null;
   tasks: Task[] = [];
   nextTaskId = 0;
+  editingId: number | null = null;
 
   constructor(private route: ActivatedRoute, private localStorageService: LocalStorageService) {}
 
@@ -53,5 +54,15 @@ export class DayComponent implements OnInit {
   toggleTaskStatus(id: number) {
     this.tasks = this.tasks.map(task => task.id === id ? {...task, completed: !task.completed} : task);
     this.localStorageService.setItem(this.date || 'default', this.tasks);
+  }
+
+  editTask(id: number) {
+    this.editingId = id;
+  }
+
+  saveTask(id: number, title: string, dueDate: string, content: string) {
+    this.tasks = this.tasks.map(task => task.id === id ? {...task, title, dueDate: moment(dueDate, 'YYYY-MM-DD').format('DD.MM.YYYY'), content} : task);
+    this.localStorageService.setItem(this.date || 'default', this.tasks);
+    this.editingId = null;
   }
 }

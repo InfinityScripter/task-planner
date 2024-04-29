@@ -11,6 +11,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import { DayComponent } from './day/day.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DayComponent } from './day/day.component';
     MatButtonModule,
     MatMomentDateModule,
     CalendarComponent,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
