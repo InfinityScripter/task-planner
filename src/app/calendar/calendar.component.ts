@@ -43,6 +43,32 @@ isDateHighlighted(date: Date): boolean {
   }
 
   dateClass = (d: Date) => {
+    const tasks = this.localStorageService.get(moment(d).format('YYYY-MM-DD'));
+    if (tasks) {
+      let allTasksCompleted = true;
+      let pastUncompletedTaskExists = false;
+      let futureTaskExists = false;
+
+      for (let task of tasks) {
+        const taskDate = new Date(task.dueDate);
+        if (taskDate < d && !task.completed) {
+          pastUncompletedTaskExists = true;
+        } else if (taskDate > d) {
+          futureTaskExists = true;
+        }
+        if (!task.completed) {
+          allTasksCompleted = false;
+        }
+      }
+
+      if (allTasksCompleted) {
+        return 'all-tasks-completed';
+      } else if (pastUncompletedTaskExists) {
+        return 'past-uncompleted-task';
+      } else if (futureTaskExists) {
+        return 'future-task';
+      }
+    }
     return this.isDateHighlighted(d) ? 'special-date' : '';
   };
 }

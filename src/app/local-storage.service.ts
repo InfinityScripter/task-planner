@@ -7,6 +7,11 @@ export class LocalStorageService {
 
   constructor() { }
 
+  get(key: string): any {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  }
+
   setItem(key: string, value: any): void {
     if (Array.isArray(value) && value.length === 0) {
       localStorage.removeItem(key);
