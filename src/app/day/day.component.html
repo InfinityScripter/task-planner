@@ -3,7 +3,139 @@
 
 </mat-card-content>
 
-<div *ngFor="let task of tasks; index as i">
+
+<mat-form-field class="full-width">
+  <input type="text"
+         placeholder="Поиск задачи"
+         matInput
+         [formControl]="taskSearchControl"
+         [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="FilteredTask($event.option.value)">
+    <mat-option *ngFor="let task of filteredTasks | async" [value]="task.id">
+      {{ task.title }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<button mat-button (click)="resetFilters()">
+  Сбросить
+  <mat-icon>restart_alt</mat-icon>
+</button>
+
+<!--Фильтрованная таска-->
+<div *ngIf="selectedTask; else allTasks">
+  <mat-card-content>
+    <div *ngIf="editingId !== selectedTask.id">
+      <mat-card [ngClass]="{'completed': selectedTask.completed}">
+        <mat-card-header>
+          <mat-card-title>{{selectedTask.title}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="task-content">
+          <p>{{selectedTask.content}}</p>
+        </mat-card-content>
+
+        <div *ngIf="selectedTask.subtasks && selectedTask.subtasks.length > 0">
+          <div *ngFor="let subtask of selectedTask.subtasks; let subIndex = index" class="subtask-item">
+            <mat-card class="subtask-card subtask-block" [ngClass]="{'completed': subtask.completed}">
+              <mat-card-header class="subtask-header">
+                <mat-card-title>{{subtask.title}}</mat-card-title>
+              </mat-card-header>
+              <mat-card-subtitle class="subtask-due-date flex-center">
+                <mat-icon class="icon-schedule">schedule</mat-icon> {{subtask.dueDate}}
+              </mat-card-subtitle>
+              <mat-card-content class="subtask-content">
+                <p>{{subtask.content}}</p>
+              </mat-card-content>
+
+              <div *ngIf="subtask.subtasks && subtask.subtasks.length > 0">
+                <div *ngFor="let subsubtask of subtask.subtasks" class="subsubtask-item">
+                  <mat-card class="subtask-card subsubtask-block" [ngClass]="{'completed': subsubtask.completed}">
+                    <mat-card-header class="subsubtask-header">
+                      <mat-card-title>{{subsubtask.title}}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-subtitle class="subsubtask-due-date flex-center">
+                      <mat-icon class="icon-schedule">schedule</mat-icon> {{subsubtask.dueDate}}
+                    </mat-card-subtitle>
+                    <mat-card-content class="subsubtask-content">
+                      <p>{{subsubtask.content}}</p>
+                    </mat-card-content>
+                    <mat-card-actions class="subtask-actions">
+                      <button mat-button color="primary" (click)="toggleSubSubtaskStatus(selectedTask.id, subtask.id, subsubtask.id)">
+                        <mat-icon>{{subsubtask.completed ? 'undo' : 'done'}}</mat-icon>
+                      </button>
+                      <button mat-button (click)="editSubSubtask(selectedTask.id, subtask.id, subsubtask)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-button color="warn" (click)="removeSubSubtask(selectedTask.id, subtask.id, subsubtask.id)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </mat-card-actions>
+                  </mat-card>
+                </div>
+              </div>
+
+              <mat-card-actions class="subtask-actions">
+                <button mat-button color="primary" [disabled]="!allSubtasksCompleted(subtask)" (click)="toggleSubtaskStatus(selectedTask.id, subtask.id)">
+                  <mat-icon>{{subtask.completed ? 'undo' : 'done'}}</mat-icon>
+                </button>
+                <button mat-button color="warn" (click)="removeSubtask(selectedTask.id, subtask.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-button (click)="editSubtask(selectedTask.id, subtask)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-button (click)="addSubSubtask(selectedTask.id, subtask.id)">
+                  <mat-icon class="icon-add">add</mat-icon>
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+
+        <mat-card-actions class="flex-space-between">
+          <mat-card-footer>
+            <button mat-button color="primary" [disabled]="!allSubtasksCompleted(selectedTask)" (click)="toggleTaskStatus(selectedTask.id)">
+              <mat-icon>{{selectedTask.completed ? 'undo' : 'done'}}</mat-icon>
+              {{selectedTask.completed ? 'Вернуть в работу' : 'Завершить'}}
+            </button>
+            <button mat-flat-button color="secondary" (click)="addSubtask(selectedTask.id)">
+              <mat-icon class="icon-add">add</mat-icon> Подзадача
+            </button>
+            <button mat-button color="accent" (click)="openEditDialog(selectedTask)">
+              Редактировать
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-card-footer>
+
+          <div>
+            <button mat-button color="warn" (click)="removeTask(selectedTask.id)">Удалить</button>
+          </div>
+        </mat-card-actions>
+        <mat-card-subtitle class="edit-button flex-center">
+          <mat-icon class="icon-schedule">schedule</mat-icon> {{selectedTask.dueDate}}
+        </mat-card-subtitle>
+
+
+      </mat-card>
+    </div>
+    <div *ngIf="editingId === selectedTask.id">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Заголовок" [(ngModel)]="selectedTask.title">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Срок исполнения" [(ngModel)]="selectedTask.dueDate" type="date">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Задача" [(ngModel)]="selectedTask.content">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="saveTask(selectedTask.id, selectedTask.title, selectedTask.dueDate.format('YYYY-MM-DD'), selectedTask.content)">Сохранить</button>
+    </div>
+
+  </mat-card-content>
+</div>
+
+<ng-template #allTasks>
+<div *ngFor="let task of tasks;">
   <mat-card-content>
     <div *ngIf="editingId !== task.id">
       <mat-card [ngClass]="{'completed': task.completed}">
@@ -113,6 +245,7 @@
 
   </mat-card-content>
 </div>
+</ng-template>
 
 <mat-card-content *ngIf="tasks && tasks.length > 0">
   <button  mat-raised-button color="primary" (click)="openAddTaskDialog()">Добавить задачу</button>

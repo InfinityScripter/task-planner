@@ -7,6 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AddSubtaskDialogComponent} from "../add-subtask-dialog.component/add-subtask-dialog.component.component";
 import {AddTaskDialogComponent} from "../add-task-dialog/add-task-dialog.component";
+import {map, Observable, startWith} from "rxjs";
 
 
 interface Task {
@@ -30,6 +31,9 @@ export class DayComponent implements OnInit {
   nextTaskId = 0;
   editingId: number | null = null;
   taskForm: FormGroup = new FormGroup({});
+  taskSearchControl = new FormControl();
+  filteredTasks: Observable<Task[]> | null = null;
+  selectedTask: Task | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,6 +42,10 @@ export class DayComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.filteredTasks = this.taskSearchControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filterTasks(value))
+    );
     this.date = this.route.snapshot.paramMap.get('date');
     this.formattedDate = this.date ? moment(this.date, 'YYYY-MM-DD') : null;
     this.tasks = this.localStorageService.getItem(this.date || 'default') || [];
@@ -47,6 +55,24 @@ export class DayComponent implements OnInit {
       'dueDate': new FormControl(null, Validators.required),
       'content': new FormControl(null, Validators.required)
     });
+
+  }
+
+  filterTasks(val: string): Task[] {
+    return this.tasks.filter(task =>
+      task.title.toLowerCase().includes(val.toLowerCase()));
+  }
+
+  FilteredTask(taskId: number) {
+    const taskElement = document.getElementById(taskId.toString());
+    if (taskElement) {
+      taskElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+    this.selectedTask = this.tasks.find(task => task.id === taskId) || null;
+  }
+
+  resetFilters() {
+    this.selectedTask = null;
   }
 
   updateTasks(newTasks: Task[]) {
