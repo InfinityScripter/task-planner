@@ -97,7 +97,8 @@ export class DayComponent implements OnInit {
   }
   addSubtask(taskId: number) {
     const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
-      width: '300px'
+      width: '300px',
+      data: { title: '', dueDate: '', content: '' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -164,6 +165,28 @@ export class DayComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.addTaskFromDialog(result.title, result.dueDate, result.content);
+      }
+    });
+  }
+  editSubtask(taskId: number, subtask: Task) {
+    const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
+      width: '300px',
+      data: subtask
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.tasks = this.tasks.map(task => {
+          if (task.id === taskId) {
+            const subtasksUpdated = task.subtasks?.map(s => {
+              if (s.id === subtask.id) return { ...s, ...result };
+              return s;
+            });
+            return { ...task, subtasks: subtasksUpdated || [] };
+          }
+          return task;
+        });
+        this.localStorageService.setItem(this.date || 'default', this.tasks);
       }
     });
   }

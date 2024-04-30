@@ -16,9 +16,9 @@ export class AddSubtaskDialogComponent {
     public dialogRef: MatDialogRef<AddSubtaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.subtaskForm = new FormGroup({
-      title: new FormControl('', Validators.required),
-      dueDate: new FormControl('', Validators.required),
-      content: new FormControl('')
+      title: new FormControl(this.data?.title || '', Validators.required),
+      dueDate: new FormControl(this.data?.dueDate || '', Validators.required),
+      content: new FormControl(this.data?.content || '', Validators.required)
     });
   }
 
