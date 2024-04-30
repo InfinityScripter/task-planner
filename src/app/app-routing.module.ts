@@ -4,7 +4,8 @@ import {DayComponent} from "./day/day.component";
 import {CalendarComponent} from "./calendar/calendar.component";
 
 const routes: Routes = [
-  { path: '', component: CalendarComponent },
+  { path: '', redirectTo: '/calendar', pathMatch: 'full' },
+  { path: 'calendar', component: CalendarComponent },
   { path: 'day/:date', component: DayComponent },
 
 ];
