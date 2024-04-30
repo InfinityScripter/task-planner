@@ -51,10 +51,10 @@ isDateHighlighted(date: Date): boolean {
       let futureTaskExists = false;
 
       for (let task of tasks) {
-        const taskDate = new Date(task.dueDate);
-        if (taskDate < d && !task.completed) {
+        const taskDueDate = new Date(task.dueDate);
+        if (taskDueDate < new Date() && !task.completed) {
           pastUncompletedTaskExists = true;
-        } else if (taskDate > d) {
+        } else if (taskDueDate > new Date()) {
           futureTaskExists = true;
         }
         if (!task.completed) {
