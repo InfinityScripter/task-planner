@@ -17,14 +17,15 @@
         </mat-card-content>
 
 
-        <div *ngIf="task.subtasks && task.subtasks.length > 0" class="subtask-block">
+        <div *ngIf="task.subtasks && task.subtasks.length > 0">
           <div *ngFor="let subtask of task.subtasks" class="subtask-item">
+            <mat-card class="subtask-card subtask-block" [ngClass]="{'completed': subtask.completed}">
             <mat-card-header class="subtask-header">
               <mat-card-title>{{subtask.title}}</mat-card-title>
             </mat-card-header>
-            <mat-card-subtitle class="subtask-due-date flex-center">
+            <mat-card-content class="subtask-due-date flex-center">
               <mat-icon class="icon-schedule">schedule</mat-icon>  {{subtask.dueDate}}
-            </mat-card-subtitle>
+            </mat-card-content>
             <mat-card-content class="subtask-content">
               <p>{{subtask.content}}</p>
             </mat-card-content>
@@ -37,8 +38,11 @@
               <button mat-button color="warn" (click)="removeSubtask(task.id, subtask.id)">
                 <mat-icon>delete</mat-icon>
               </button>
-              <button mat-button (click)="editSubtask(task.id, subtask)">Редактировать</button>
+              <button mat-button (click)="editSubtask(task.id, subtask)">
+                <mat-icon>edit</mat-icon>
+              </button>
             </mat-card-actions>
+            </mat-card>
           </div>
         </div>
 

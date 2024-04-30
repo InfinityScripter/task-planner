@@ -66,8 +66,7 @@
 }
 
 .subtask-block {
-  margin-top: 20px;
-  margin-left: 30px;
+  margin: 20px 10px 0 30px;
   border-left: 2px solid #757575;
 }
 
