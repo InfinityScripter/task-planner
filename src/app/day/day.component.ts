@@ -46,9 +46,10 @@ export class DayComponent implements OnInit {
       startWith(''),
       map(value => this.filterTasks(value))
     );
+
     this.date = this.route.snapshot.paramMap.get('date');
     this.formattedDate = this.date ? moment(this.date, 'YYYY-MM-DD') : null;
-    this.tasks = this.localStorageService.getItem(this.date || 'default') || [];
+    this.tasks = this.sortTasks(this.localStorageService.getItem(this.date || 'default') || []);
     this.nextTaskId = this.tasks.length > 0 ? Math.max(...this.tasks.map(task => task.id)) + 1 : 0;
     this.taskForm = new FormGroup({
       'title': new FormControl(null, Validators.required),
@@ -58,7 +59,10 @@ export class DayComponent implements OnInit {
 
   }
 
-  filterTasks(val: string): Task[] {
+  filterTasks(val: any): Task[] {
+    if (typeof val !== 'string') {
+      val = '';
+    }
     return this.tasks.filter(task =>
       task.title.toLowerCase().includes(val.toLowerCase()));
   }
@@ -124,6 +128,8 @@ export class DayComponent implements OnInit {
     if (this.selectedTask && this.selectedTask.id === id) {
       this.selectedTask = this.tasks.find(task => task.id === id) || null;
     }
+    this.tasks = this.sortTasks(this.tasks);
+    this.localStorageService.setItem(this.date || 'default', this.tasks);
   }
 
 
@@ -195,6 +201,8 @@ export class DayComponent implements OnInit {
       }
       return task;
     });
+
+    this.tasks = this.sortTasks(this.tasks);
     this.localStorageService.setItem(this.date || 'default', this.tasks);
   }
 
@@ -299,6 +307,7 @@ export class DayComponent implements OnInit {
       }
       return task;
     });
+    this.tasks = this.sortTasks(this.tasks);
     this.localStorageService.setItem(this.date || 'default', this.tasks);
   }
 
@@ -353,4 +362,14 @@ export class DayComponent implements OnInit {
     return task.subtasks.every(subtask => subtask.completed && this.allSubtasksCompleted(subtask));
   }
 
+  sortTasks(tasks: Task[]): Task[] {
+    return tasks
+      .map(task => {
+        if (task.subtasks) {
+          task.subtasks = this.sortTasks(task.subtasks);
+        }
+        return task;
+      })
+      .sort((a, b) => Number(a.completed) - Number(b.completed));
+  }
 }
