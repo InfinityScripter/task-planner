@@ -19,6 +19,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {AddSubtaskDialogComponent} from "./add-subtask-dialog.component/add-subtask-dialog.component.component";
 import { AddTaskDialogComponent } from './add-task-dialog/add-task-dialog.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -45,6 +46,10 @@ import { AddTaskDialogComponent } from './add-task-dialog/add-task-dialog.compon
     MatToolbarModule,
     MatMenuModule,
     MatIconModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

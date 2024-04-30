@@ -78,7 +78,19 @@ export class DayComponent implements OnInit {
         if (!this.allSubtasksCompleted(task)) {
           return task;
         }
-        return {...task, completed: !task.completed};
+        const newStatus = !task.completed;
+        const updateSubtasksStatus = (subtasks: Task[]): Task[] => {
+          return subtasks.map(subtask => {
+            if (subtask.subtasks) {
+              subtask.subtasks = updateSubtasksStatus(subtask.subtasks);
+            }
+            return {...subtask, completed: newStatus};
+          });
+        };
+        if (task.subtasks) {
+          task.subtasks = updateSubtasksStatus(task.subtasks);
+        }
+        return {...task, completed: newStatus};
       }
       return task;
     });
@@ -243,7 +255,12 @@ export class DayComponent implements OnInit {
           if (subtask.id === subtaskId) {
             subtask.subtasks = subtask.subtasks?.map(subsubtask => {
               if (subsubtask.id === subsubtaskId) {
-                subsubtask.completed = !subsubtask.completed;
+                const newStatus = !subsubtask.completed;
+                if (!newStatus) {
+                  task.completed = newStatus;
+                  subtask.completed = newStatus;
+                }
+                return {...subsubtask, completed: newStatus};
               }
               return subsubtask;
             });
