@@ -3,3 +3,7 @@
   justify-content: space-between;
   margin-top: 20px;
 }
+
+.full-width{
+  width: 100%;
+}

@@ -14,7 +14,7 @@
     </mat-form-field>
   </form>
 </div>
-<div mat-dialog-actions>
+<div class="add-task-action" mat-dialog-actions>
   <button mat-button [mat-dialog-close]="subtaskForm.value" [disabled]="!subtaskForm.valid">Добавить</button>
   <button mat-button (click)="onNoClick()">Отмена</button>
 </div>

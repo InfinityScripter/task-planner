@@ -135,7 +135,7 @@ export class DayComponent implements OnInit {
 
   openEditDialog(task: Task): void {
     const dialogRef = this.dialog.open(EditTaskDialogComponent, {
-      width: '300px',
+      width: '360px',
       data: { title: task.title, content: task.content }
     });
 
@@ -147,7 +147,7 @@ export class DayComponent implements OnInit {
   }
   addSubtask(taskId: number) {
     const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
-      width: '300px',
+      width: '360px',
       data: { title: '', dueDate: '', content: '' }
     });
 
@@ -212,7 +212,7 @@ export class DayComponent implements OnInit {
 
   openAddTaskDialog(): void {
     const dialogRef = this.dialog.open(AddTaskDialogComponent, {
-      width: '300px'
+      width: '360px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -223,7 +223,7 @@ export class DayComponent implements OnInit {
   }
   editSubtask(taskId: number, subtask: Task) {
     const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
-      width: '300px',
+      width: '360px',
       data: subtask
     });
 
@@ -247,7 +247,7 @@ export class DayComponent implements OnInit {
 
   addSubSubtask(taskId: number, subtaskId: number) {
     const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
-      width: '300px',
+      width: '360px',
       data: { title: '', dueDate: '', content: '' }
     });
 
@@ -319,7 +319,7 @@ export class DayComponent implements OnInit {
 
   editSubSubtask(taskId: number, subtaskId: number, subsubtask: Task) {
     const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
-      width: '300px',
+      width: '360px',
       data: subsubtask
     });
 

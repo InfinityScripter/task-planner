@@ -6,6 +6,7 @@ import moment from "moment";
 @Component({
   selector: 'app-edit-task-dialog',
   templateUrl: './edit-task-dialog.component.html',
+  styleUrls: ['./edit-task-dialog.component.css'],
 })
 export class EditTaskDialogComponent {
   titleControl = new FormControl('', Validators.required);
@@ -33,4 +34,9 @@ export class EditTaskDialogComponent {
       this.formInvalid = true;
     }
   }
+
+close(): void {
+    this.dialogRef.close();
+
+}
 }

@@ -1,0 +1,9 @@
+.full-width {
+  width: 100%;
+}
+
+.add-task-action {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
