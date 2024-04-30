@@ -121,6 +121,9 @@ export class DayComponent implements OnInit {
       return task;
     });
     this.localStorageService.setItem(this.date || 'default', this.tasks);
+    if (this.selectedTask && this.selectedTask.id === id) {
+      this.selectedTask = this.tasks.find(task => task.id === id) || null;
+    }
   }
 
 
