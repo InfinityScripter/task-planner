@@ -192,5 +192,100 @@ export class DayComponent implements OnInit {
   }
 
 
+  addSubSubtask(taskId: number, subtaskId: number) {
+    const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
+      width: '300px',
+      data: { title: '', dueDate: '', content: '' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const subsubtask: Task = {
+          id: this.nextTaskId++,
+          title: result.title,
+          dueDate: moment(result.dueDate, 'YYYY-MM-DD'),
+          content: result.content,
+          completed: false
+        };
+        this.tasks = this.tasks.map(task => {
+          if (task.id === taskId) {
+            const subtasksUpdated = task.subtasks?.map(subtask => {
+              if (subtask.id === subtaskId) {
+                subtask.subtasks = [...(subtask.subtasks || []), subsubtask];
+              }
+              return subtask;
+            });
+            return { ...task, subtasks: subtasksUpdated };
+          }
+          return task;
+        });
+        this.localStorageService.setItem(this.date || 'default', this.tasks);
+      }
+    });
+  }
+
+  toggleSubSubtaskStatus(taskId: number, subtaskId: number, subsubtaskId: number) {
+    this.tasks = this.tasks.map(task => {
+      if (task.id === taskId) {
+        task.subtasks = task.subtasks?.map(subtask => {
+          if (subtask.id === subtaskId) {
+            subtask.subtasks = subtask.subtasks?.map(subsubtask => {
+              if (subsubtask.id === subsubtaskId) {
+                subsubtask.completed = !subsubtask.completed;
+              }
+              return subsubtask;
+            });
+          }
+          return subtask;
+        });
+      }
+      return task;
+    });
+    this.localStorageService.setItem(this.date || 'default', this.tasks);
+  }
+
+  removeSubSubtask(taskId: number, subtaskId: number, subsubtaskId: number) {
+    this.tasks = this.tasks.map(task => {
+      if (task.id === taskId) {
+        task.subtasks = task.subtasks?.map(subtask => {
+          if (subtask.id === subtaskId) {
+            subtask.subtasks = subtask.subtasks?.filter(subsubtask => subsubtask.id !== subsubtaskId);
+          }
+          return subtask;
+        });
+      }
+      return task;
+    });
+    this.localStorageService.setItem(this.date || 'default', this.tasks);
+  }
+
+  editSubSubtask(taskId: number, subtaskId: number, subsubtask: Task) {
+    const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
+      width: '300px',
+      data: subsubtask
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.tasks = this.tasks.map(task => {
+          if (task.id === taskId) {
+            task.subtasks = task.subtasks?.map(subtask => {
+              if (subtask.id === subtaskId) {
+                subtask.subtasks = subtask.subtasks?.map(subsubtaskItem => {
+                  if (subsubtaskItem.id === subsubtask.id) {
+                    return { ...subsubtaskItem, ...result };
+                  }
+                  return subsubtaskItem;
+                });
+              }
+              return subtask;
+            });
+          }
+          return task;
+        });
+        this.localStorageService.setItem(this.date || 'default', this.tasks);
+      }
+    });
+  }
 
 }

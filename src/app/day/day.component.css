@@ -66,8 +66,13 @@
 }
 
 .subtask-block {
-  margin: 20px 10px 0 30px;
+  margin: 20px 10px 10px 30px;
   border-left: 2px solid #757575;
+}
+.subsubtask-block {
+  margin: 20px 10px 10px 50px;
+  border-left: 2px solid #757575;
+
 }
 
 .subtask-item {
