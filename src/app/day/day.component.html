@@ -41,7 +41,7 @@
                 <mat-card-title>{{subtask.title}}</mat-card-title>
               </mat-card-header>
               <mat-card-content class="subtask-due-date flex-center">
-                <mat-icon class="icon-schedule">schedule</mat-icon> {{subtask.dueDate}}
+                <mat-icon class="icon-schedule">schedule</mat-icon> {{subtask.dueDate| date: 'dd.MM.yyyy'}}
               </mat-card-content>
               <mat-card-content class="subtask-content">
                 <p>{{subtask.content}}</p>
@@ -54,7 +54,7 @@
                       <mat-card-title>{{subsubtask.title}}</mat-card-title>
                     </mat-card-header>
                     <mat-card-content class="subsubtask-due-date flex-center">
-                      <mat-icon class="icon-schedule">schedule</mat-icon> {{subsubtask.dueDate}}
+                      <mat-icon class="icon-schedule">schedule</mat-icon> {{subsubtask.dueDate| date: 'dd.MM.yyyy'}}
                     </mat-card-content>
                     <mat-card-content class="subsubtask-content">
                       <p>{{subsubtask.content}}</p>
@@ -112,7 +112,7 @@
           </div>
         </mat-card-actions>
         <mat-card-content class="edit-button flex-center">
-          <mat-icon class="icon-schedule">schedule</mat-icon> {{selectedTask.dueDate}}
+          <mat-icon class="icon-schedule">schedule</mat-icon> {{selectedTask.dueDate| date: 'dd.MM.yyyy'}}
         </mat-card-content>
 
 
@@ -153,7 +153,7 @@
                 <mat-card-title>{{subtask.title}}</mat-card-title>
               </mat-card-header>
               <mat-card-content class="subtask-due-date flex-center">
-                <mat-icon class="icon-schedule">schedule</mat-icon> {{subtask.dueDate}}
+                <mat-icon class="icon-schedule">schedule</mat-icon> {{subtask.dueDate| date: 'dd.MM.yyyy'}}
               </mat-card-content>
               <mat-card-content class="subtask-content">
                 <p>{{subtask.content}}</p>
@@ -166,7 +166,7 @@
                       <mat-card-title>{{subsubtask.title}}</mat-card-title>
                     </mat-card-header>
                     <mat-card-content class="subsubtask-due-date flex-center">
-                      <mat-icon class="icon-schedule">schedule</mat-icon> {{subsubtask.dueDate}}
+                      <mat-icon class="icon-schedule">schedule</mat-icon> {{subsubtask.dueDate| date: 'dd.MM.yyyy'}}
                     </mat-card-content>
                     <mat-card-content class="subsubtask-content">
                       <p>{{subsubtask.content}}</p>
@@ -224,7 +224,7 @@
           </div>
         </mat-card-actions>
         <mat-card-subtitle class="edit-button flex-center">
-          <mat-icon class="icon-schedule">schedule</mat-icon> {{task.dueDate}}
+          <mat-icon class="icon-schedule">schedule</mat-icon> {{task.dueDate| date: 'dd.MM.yyyy'}}
         </mat-card-subtitle>
 
 

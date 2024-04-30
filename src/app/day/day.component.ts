@@ -13,7 +13,7 @@ import {map, Observable, startWith} from "rxjs";
 interface Task {
   id: number;
   title: string;
-  dueDate: moment.Moment;
+  dueDate: any;
   content: string;
   completed: boolean;
   subtasks?: Task[];
