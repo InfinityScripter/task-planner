@@ -8,6 +8,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AddSubtaskDialogComponent} from "../add-subtask-dialog.component/add-subtask-dialog.component.component";
 import {AddTaskDialogComponent} from "../add-task-dialog/add-task-dialog.component";
 
+
 interface Task {
   id: number;
   title: string;
@@ -72,7 +73,15 @@ export class DayComponent implements OnInit {
     this.updateTasks(this.tasks.filter(task => task.id !== id));
   }
   toggleTaskStatus(id: number) {
-    this.tasks = this.tasks.map(task => task.id === id ? {...task, completed: !task.completed} : task);
+    this.tasks = this.tasks.map(task => {
+      if (task.id === id) {
+        if (!this.allSubtasksCompleted(task)) {
+          return task;
+        }
+        return {...task, completed: !task.completed};
+      }
+      return task;
+    });
     this.localStorageService.setItem(this.date || 'default', this.tasks);
   }
 
@@ -135,6 +144,9 @@ export class DayComponent implements OnInit {
       if (task.id === taskId && task.subtasks) {
         task.subtasks = task.subtasks.map(subtask => {
           if (subtask.id === subtaskId) {
+            if (!this.allSubtasksCompleted(subtask)) {
+              return subtask;
+            }
             subtask.completed = !subtask.completed;
           }
           return subtask;
@@ -286,6 +298,13 @@ export class DayComponent implements OnInit {
         this.localStorageService.setItem(this.date || 'default', this.tasks);
       }
     });
+  }
+
+  allSubtasksCompleted(task: Task): boolean {
+    if (!task.subtasks) {
+      return true;
+    }
+    return task.subtasks.every(subtask => subtask.completed && this.allSubtasksCompleted(subtask));
   }
 
 }

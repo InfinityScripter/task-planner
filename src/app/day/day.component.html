@@ -1,6 +1,7 @@
-<mat-card>
-  <mat-card-subtitle class="flex-center">{{formattedDate}}</mat-card-subtitle>
-</mat-card>
+<mat-card-content>
+  <mat-card-subtitle class="flex-center">Задачи на {{formattedDate?.toDate() | date: 'dd.MM.yyyy'}}</mat-card-subtitle>
+
+</mat-card-content>
 
 <div *ngFor="let task of tasks; index as i">
   <mat-card-content>
@@ -8,9 +9,6 @@
       <mat-card [ngClass]="{'completed': task.completed}">
         <mat-card-header>
           <mat-card-title>{{task.title}}</mat-card-title>
-          <mat-card-subtitle class="flex-center">
-            <mat-icon class="icon-schedule">schedule</mat-icon> {{task.dueDate}}
-          </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="task-content">
           <p>{{task.content}}</p>
@@ -29,7 +27,6 @@
                 <p>{{subtask.content}}</p>
               </mat-card-content>
 
-              <!-- Отображение подподзадач -->
               <div *ngIf="subtask.subtasks && subtask.subtasks.length > 0">
                 <div *ngFor="let subsubtask of subtask.subtasks" class="subsubtask-item">
                   <mat-card class="subtask-card subsubtask-block" [ngClass]="{'completed': subsubtask.completed}">
@@ -58,7 +55,7 @@
               </div>
 
               <mat-card-actions class="subtask-actions">
-                <button mat-button color="primary" (click)="toggleSubtaskStatus(task.id, subtask.id)">
+                <button mat-button color="primary" [disabled]="!allSubtasksCompleted(subtask)" (click)="toggleSubtaskStatus(task.id, subtask.id)">
                   <mat-icon>{{subtask.completed ? 'undo' : 'done'}}</mat-icon>
                 </button>
                 <button mat-button color="warn" (click)="removeSubtask(task.id, subtask.id)">
@@ -77,12 +74,16 @@
 
         <mat-card-actions class="flex-space-between">
           <mat-card-footer>
-            <button mat-button color="primary" (click)="toggleTaskStatus(task.id)">
+            <button mat-button color="primary" [disabled]="!allSubtasksCompleted(task)" (click)="toggleTaskStatus(task.id)">
               <mat-icon>{{task.completed ? 'undo' : 'done'}}</mat-icon>
               {{task.completed ? 'Вернуть в работу' : 'Завершить'}}
             </button>
             <button mat-flat-button color="secondary" (click)="addSubtask(task.id)">
               <mat-icon class="icon-add">add</mat-icon> Подзадача
+            </button>
+            <button mat-button color="accent" (click)="openEditDialog(task)">
+              Редактировать
+              <mat-icon>edit</mat-icon>
             </button>
           </mat-card-footer>
 
@@ -90,9 +91,10 @@
             <button mat-button color="warn" (click)="removeTask(task.id)">Удалить</button>
           </div>
         </mat-card-actions>
-        <button mat-icon-button color="accent" (click)="openEditDialog(task)" class="edit-button">
-          <mat-icon>edit</mat-icon>
-        </button>
+        <mat-card-subtitle class="edit-button flex-center">
+          <mat-icon class="icon-schedule">schedule</mat-icon> {{task.dueDate}}
+        </mat-card-subtitle>
+
 
       </mat-card>
     </div>
@@ -112,9 +114,9 @@
   </mat-card-content>
 </div>
 
-<div *ngIf="tasks && tasks.length > 0">
-  <button mat-raised-button color="primary" (click)="openAddTaskDialog()">Добавить задачу</button>
-</div>
+<mat-card-content *ngIf="tasks && tasks.length > 0">
+  <button  mat-raised-button color="primary" (click)="openAddTaskDialog()">Добавить задачу</button>
+</mat-card-content>
 
 <div class="empty-message" *ngIf="!tasks || tasks.length === 0">
   <div>
