@@ -1,8 +1,10 @@
 <mat-toolbar class="mat-header" color="primary">
+  <a href="/" style="color: white; text-decoration: none;">
   <button mat-button>
     <mat-icon>home</mat-icon>
-    <a href="/" style="color: white; text-decoration: none;">{{title}}</a>
+{{title}}
   </button>
+  </a>
 </mat-toolbar>
 
 
@@ -14,5 +16,6 @@
 
 <mat-toolbar class="mat-footer" color="primary">
   <span class="example-fill-remaining-space"></span>
-  <span>&copy; Проект | {{date| date: 'yyyy'}}</span>
+  <span>
+    Сегодня | {{date| date: 'd MMMM y'}}</span>
 </mat-toolbar>

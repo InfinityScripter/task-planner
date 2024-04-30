@@ -46,10 +46,14 @@
 .flex-space-between {
   display: flex;
   justify-content: space-between;
+  background-color: whitesmoke;
 }
 
 .task-content {
   margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+
 }
 
 .completed {
@@ -60,3 +64,41 @@
 .icon-schedule {
   margin-right: 8px;
 }
+
+.subtask-block {
+  margin-top: 20px;
+  padding-left: 30px;
+}
+
+.subtask-item {
+  margin-bottom: 10px;
+}
+
+.subtask-header {
+  font-size: 0.9em;
+  color: #757575;
+}
+
+.subtask-content {
+  font-size: 0.8em;
+  color: #757575;
+}
+
+.subtask-due-date {
+  font-size: 0.8em;
+  color: #757575;
+}
+
+.subtask-actions {
+  font-size: 0.8em;
+}
+
+.empty-message {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -150%);
+}
+

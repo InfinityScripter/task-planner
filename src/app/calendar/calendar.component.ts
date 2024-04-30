@@ -5,6 +5,7 @@ import {NativeDateAdapter} from '@angular/material/core';
 import {Router} from '@angular/router';
 import moment from "moment";
 import {LocalStorageService} from "../local-storage.service";
+import {MatIconModule} from "@angular/material/icon";
 
 
 
@@ -14,7 +15,7 @@ import {LocalStorageService} from "../local-storage.service";
   styleUrls: ['./calendar.component.css'],
   standalone: true,
   providers: [NativeDateAdapter],
-  imports: [MatCardModule, MatDatepickerModule],
+  imports: [MatCardModule, MatDatepickerModule, MatIconModule],
 
 })
 export class CalendarComponent {
@@ -39,7 +40,7 @@ isDateHighlighted(date: Date): boolean {
 
   setSelected(date: Date | null) {
     this.selected = date;
-    this.formattedSelected = date ? moment(date).format('YYYY-MM-DD') : null;
+    this.formattedSelected = date ? moment(date).format('DD MMM YYYY') : null;
   }
 
   dateClass = (d: Date) => {

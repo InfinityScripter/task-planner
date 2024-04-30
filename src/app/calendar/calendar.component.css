@@ -1,28 +1,27 @@
 .inline-calendar-card {
-  width: 300px;
+  width: 400px;
   margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .inline-calendar-card {
+    width: 100%;
+  }
 }
 .inline-calendar-p {
   text-align: center;
-  margin: 0 auto;
+  margin: 20px auto 0;
+  color: #a2a7b4;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
 }
 
 /*::ng-deep .special-date .mat-calendar-body-cell-content {*/
 /*  background-color: #23aadb;*/
 /*}*/
 
-
-/*::ng-deep .overdue .mat-calendar-body-cell-content {*/
-/*  background-color: #f00;*/
-/*}*/
-
-/*::ng-deep .completed .mat-calendar-body-cell-content {*/
-/*  background-color: #0f0;*/
-/*}*/
-
-/*::ng-deep .pending .mat-calendar-body-cell-content {*/
-
-/*}*/
 
 
 ::ng-deep  .past-uncompleted-task .mat-calendar-body-cell-content {
