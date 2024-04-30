@@ -6,6 +6,7 @@ import {EditTaskDialogComponent} from "../edit-task-dialog/edit-task-dialog.comp
 import {MatDialog} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AddSubtaskDialogComponent} from "../add-subtask-dialog.component/add-subtask-dialog.component.component";
+import {AddTaskDialogComponent} from "../add-task-dialog/add-task-dialog.component";
 
 interface Task {
   id: number;
@@ -27,7 +28,6 @@ export class DayComponent implements OnInit {
   tasks: Task[] = [];
   nextTaskId = 0;
   editingId: number | null = null;
-  dueDateControl = new FormControl();
   taskForm: FormGroup = new FormGroup({});
 
   constructor(
@@ -143,5 +143,31 @@ export class DayComponent implements OnInit {
     });
     this.localStorageService.setItem(this.date || 'default', this.tasks);
   }
+
+  addTaskFromDialog(title: string, dueDate: string, content: string) {
+    const task: Task = {
+      id: this.nextTaskId++,
+      title,
+      dueDate: moment(dueDate, 'YYYY-MM-DD'),
+      content,
+      completed: false
+    };
+    this.updateTasks([...this.tasks, task]);
+  }
+
+
+  openAddTaskDialog(): void {
+    const dialogRef = this.dialog.open(AddTaskDialogComponent, {
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addTaskFromDialog(result.title, result.dueDate, result.content);
+      }
+    });
+  }
+
+
 
 }

@@ -18,6 +18,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {AddSubtaskDialogComponent} from "./add-subtask-dialog.component/add-subtask-dialog.component.component";
+import { AddTaskDialogComponent } from './add-task-dialog/add-task-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {AddSubtaskDialogComponent} from "./add-subtask-dialog.component/add-subt
     DayComponent,
     EditTaskDialogComponent,
     AddSubtaskDialogComponent,
+    AddTaskDialogComponent,
   ],
   imports: [
     BrowserModule,
